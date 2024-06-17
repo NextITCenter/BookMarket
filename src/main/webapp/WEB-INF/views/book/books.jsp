@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="container py-4">
-	<%@include file="fragments/header.jsp" %>
+	<%@include file="/WEB-INF/views/fragments/header.jsp" %>
 	<main>
 		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
 			<div class="container-fluid py-5">
@@ -26,7 +26,6 @@
 			BookRepository repository = BookRepository.getInstance();
 			List<BookVO> books = repository.getBooks();
 		%>
-		<%=books.size() %>
 		<div class="row align-items-md-stretch text-center">
 			<%
 			for (BookVO book: books) {
@@ -46,7 +45,7 @@
 			%>
 		</div>
 	</main>
-	<%@ include file="fragments/footer.jsp" %>
+	<%@ include file="/WEB-INF/views/fragments/footer.jsp" %>
 </div>
 
 <script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>

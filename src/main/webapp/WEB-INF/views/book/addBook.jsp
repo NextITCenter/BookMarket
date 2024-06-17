@@ -9,7 +9,7 @@
 	href="${pageContext.request.contextPath }/css/bootstrap.min.css">
 </head>
 <body>
-	<jsp:include page="fragments/header.jsp" />
+	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 	<main>
 		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
 			<div class="container-fluid py-5">
@@ -92,7 +92,7 @@
 			</form>
 		</div>
 	</main>
-	<jsp:include page="fragments/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 	<script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

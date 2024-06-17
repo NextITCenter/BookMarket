@@ -16,7 +16,7 @@ BookRepository repository = new BookRepository();
 <body>
 <body>
 <div class="container py-4">
-	<jsp:include page="fragments/header.jsp" />
+	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 	<main>
 		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
 			<div class="container-fluid py-5">
@@ -47,7 +47,7 @@ BookRepository repository = new BookRepository();
 			</div>
 		</div>
 	</main>
-	<jsp:include page="fragments/footer.jsp" />
+	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 </div>
 <script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>
 </body>
