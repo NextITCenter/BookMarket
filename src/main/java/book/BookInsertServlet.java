@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,26 +37,20 @@ public class BookInsertServlet extends HttpServlet {
 		String releaseDate = req.getParameter("releaseDate");
 		String condition = req.getParameter("condition");
 		// TODO: 첨부파일 이미지 작성해야함
-		
 
+		Connection connection = null;
+		PreparedStatement statement = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
 			StringBuilder builder = new StringBuilder();
 			builder.append("insert into book ");
-			builder.append("(id, title, price, author, description, publisher, category, quantity, release_date, condition) ");
+			builder.append("	(id, title, price, author, description, publisher, category, quantity, release_date, condition) ");
 			builder.append("values ");
-			builder.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			builder.append("	(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			String sql = builder.toString();
-			// jdk 14이상부터 사용 가능한 """ """
-//			String sql2 = 
-//			"""
-//			insert into book
-//					(id, title, price, author, description, publisher, category, quantity, release_date, condition)
-//			values
-//					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-//			""";
-			PreparedStatement statement = connection.prepareStatement(sql);
+
+			statement = connection.prepareStatement(sql);
 			statement.setString(1, id);
 			statement.setString(2, title);
 			statement.setInt(3, price);
@@ -75,6 +70,13 @@ public class BookInsertServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

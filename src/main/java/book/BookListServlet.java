@@ -20,9 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 public class BookListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
 			String sql = """
 				select
 					id,
@@ -39,8 +42,8 @@ public class BookListServlet extends HttpServlet {
 				from
 					book
 			""";
-			PreparedStatement statement = connection.prepareStatement(sql);
-			ResultSet resultSet = statement.executeQuery();
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
 			List<BookVO> list = new ArrayList<BookVO>();
 			while (resultSet.next()) {
 				String id = resultSet.getString("id");
@@ -62,6 +65,20 @@ public class BookListServlet extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/views/book/books.jsp").forward(req, resp);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
