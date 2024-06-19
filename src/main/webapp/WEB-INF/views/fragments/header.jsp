@@ -11,9 +11,7 @@
 			</a>
 			<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href='<c:url value="/books"/>'>도서 목록</a>
-				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/insert">도서 등록</a>
-				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/update">도서 수정</a>
-				<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/delete">도서 삭제</a>
+				<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/insert">도서 등록</a>
 			</nav>
 		</div>
 	</header>

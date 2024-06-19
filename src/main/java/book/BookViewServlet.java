@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/books")
-public class BookListServlet extends HttpServlet {
+@WebServlet("/books/view")
+public class BookViewServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String searchId = req.getParameter("id");
+		
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -41,11 +42,15 @@ public class BookListServlet extends HttpServlet {
 					image_filename
 				from
 					book
+				where
+					id = ?
 			""";
 			statement = connection.prepareStatement(sql);
+			statement.setString(1, searchId);
+			
 			resultSet = statement.executeQuery();
-			List<BookVO> list = new ArrayList<BookVO>();
-			while (resultSet.next()) {
+			BookVO book = null;
+			if (resultSet.next()) {
 				String id = resultSet.getString("id");
 				String title = resultSet.getString("title");
 				int price = resultSet.getInt("price");
@@ -56,13 +61,11 @@ public class BookListServlet extends HttpServlet {
 				long quantity = resultSet.getLong("quantity");
 				Date releaseDate = resultSet.getDate("release_date");
 				String condition = resultSet.getString("condition");
-				list.add(
-					new BookVO(id, title, price, author, description, publisher,
-							category, quantity, releaseDate.toLocalDate(), condition)
-				);
+				book = new BookVO(id, title, price, author, description, publisher,
+							category, quantity, releaseDate.toLocalDate(), condition);
 			}
-			req.setAttribute("books", list);
-			req.getRequestDispatcher("/WEB-INF/views/book/list.jsp").forward(req, resp);
+			req.setAttribute("book", book);
+			req.getRequestDispatcher("/WEB-INF/views/book/view.jsp").forward(req, resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -80,6 +83,7 @@ public class BookListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+
 	}
 }
 
