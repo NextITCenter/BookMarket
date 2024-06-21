@@ -17,7 +17,16 @@ public class BookVO {
 	private long quantity;			// 재고 개수
 	private LocalDate releaseDate;	// 출판일(년-월-일)
 	private String condition;		// 신제품 or 구제품 or 리퍼비시 제품
+	private String imageFilename;
+	// Telescoping Constructor Pattern(점증적 생성자 패턴)
 	public BookVO() {
+	}
+	public BookVO(String id) {
+		this.id = id;
+	}
+	public BookVO(String id, String title) {
+		this.id = id;
+		this.title = title;
 	}
 	public BookVO(String id, String title, int price, String author, String description, String publisher,
 			String category, long quantity, LocalDate releaseDate, String condition) {
@@ -32,6 +41,22 @@ public class BookVO {
 		this.releaseDate = releaseDate;
 		this.condition = condition;
 	}
+
+	public BookVO(String id, String title, int price, String author, String description, String publisher,
+			String category, long quantity, LocalDate releaseDate, String condition, String imageFilename) {
+		this.id = id;
+		this.title = title;
+		this.price = price;
+		this.author = author;
+		this.description = description;
+		this.publisher = publisher;
+		this.category = category;
+		this.quantity = quantity;
+		this.releaseDate = releaseDate;
+		this.condition = condition;
+		this.imageFilename = imageFilename;
+	}
+	// Java Beans Pattern(자바 빈즈 패턴)
 	public String getId() {
 		return id;
 	}
@@ -92,5 +117,20 @@ public class BookVO {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
-	
+	public String getImageFilename() {
+		return imageFilename;
+	}
+	public void setImageFilename(String imageFilename) {
+		this.imageFilename = imageFilename;
+	}
+	@Override
+	public String toString() {
+		return "BookVO [id=" + id + ", title=" + title + ", price=" + price + ", author=" + author + ", description="
+				+ description + ", publisher=" + publisher + ", category=" + category + ", quantity=" + quantity
+				+ ", releaseDate=" + releaseDate + ", condition=" + condition + ", imageFilename=" + imageFilename
+				+ "]";
+	}
+	// Telescoping Constructor Pattern과 Java Beans Pattern 이외에
+	// Builder Pattern을 많이 사용한다.
+	// Inner Class 방식으로 설계
 }

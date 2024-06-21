@@ -1,6 +1,8 @@
 package book;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -14,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 @WebServlet("/books/update")
 @MultipartConfig
@@ -38,7 +41,8 @@ public class BookUpdateServlet extends HttpServlet {
 						description,
 						category,
 						quantity,
-						condition
+						condition,
+						image_filename
 					from
 						book
 					where
@@ -59,7 +63,9 @@ public class BookUpdateServlet extends HttpServlet {
 				String category = resultSet.getString("category");
 				long quantity = resultSet.getLong("quantity");
 				String condition = resultSet.getString("condition");
-				book = new BookVO(id, title, price, author, description, publisher, category, quantity, releaseDate.toLocalDate(), condition);
+				String imageFilename = resultSet.getString("image_filename");
+				book = new BookVO(id, title, price, author, description, publisher,
+					category, quantity, releaseDate.toLocalDate(), condition, imageFilename);
 			}
 			req.setAttribute("book", book);
 			req.getRequestDispatcher("/WEB-INF/views/book/update.jsp").forward(req, resp);
@@ -96,6 +102,13 @@ public class BookUpdateServlet extends HttpServlet {
 		Long quantity = Long.parseLong(req.getParameter("quantity"));
 		Date releaseDate = Date.valueOf(req.getParameter("releaseDate"));
 		String condition = req.getParameter("condition");
+		// 스트림형식으로 업로드된 파일 Part로 가져오기
+		Part part = req.getPart("imageFile");
+		String filename = id + ".jpg";
+		// 파일이 저장될 경로
+		Path path = Paths.get("c:\\", "Users", "user", "book", "images", filename);
+		// 파일 쓰기
+		part.write(path.toString());
 		
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -114,7 +127,8 @@ public class BookUpdateServlet extends HttpServlet {
 						category = ?,
 						quantity = ?,
 						release_date = ?,
-						condition = ?
+						condition = ?,
+						image_filename = ?
 					where
 						id = ?
 					""";
@@ -129,7 +143,8 @@ public class BookUpdateServlet extends HttpServlet {
 			statement.setLong(7, quantity);
 			statement.setDate(8, releaseDate);
 			statement.setString(9, condition);
-			statement.setString(10, id);
+			statement.setString(10, filename);
+			statement.setString(11, id);
 			
 			int executeUpdate = statement.executeUpdate();
 			if (executeUpdate > 0) {

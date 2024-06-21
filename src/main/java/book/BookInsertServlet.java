@@ -59,9 +59,9 @@ public class BookInsertServlet extends HttpServlet {
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
 			StringBuilder builder = new StringBuilder();
 			builder.append("insert into book ");
-			builder.append("	(id, title, price, author, description, publisher, category, quantity, release_date, condition) ");
+			builder.append("	(id, title, price, author, description, publisher, category, quantity, release_date, condition, image_filename) ");
 			builder.append("values ");
-			builder.append("	(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			builder.append("	(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			String sql = builder.toString();
 
 			statement = connection.prepareStatement(sql);
@@ -75,6 +75,7 @@ public class BookInsertServlet extends HttpServlet {
 			statement.setLong(8, quantity);
 			statement.setDate(9, Date.valueOf(releaseDate));
 			statement.setString(10, condition);
+			statement.setString(11, filename);
 			
 			int executeUpdate = statement.executeUpdate();
 			if (executeUpdate > 0) {

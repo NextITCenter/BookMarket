@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"><title>도서 정보</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css"><title>도서 정보</title>
 </head>
 <body>
 <body>
@@ -21,6 +21,9 @@
 		<div class="row align-items-md-stretch text-center">
 			<div class="col-md-12">
 				<h3 class="fw-bold">${book.title }</h3>
+				<div class="row d-flex justify-content-center">
+					<img class="col-md-3" src="${pageContext.request.contextPath }/books/image?id=${book.id}" alt="${book.title }의 도서 표지">
+				</div>
 				<p>${book.description }</p>
 				<p>${book.id }</p>
 				<p>${book.author}</p>
@@ -33,7 +36,7 @@
 					<a href="#" class="btn btn-info">도서주문</a>
 					
 					<a href="${pageContext.request.contextPath }/books/update?id=${book.id }" class="btn btn-warning">수정</a>
-					<a href="${pageContext.request.contextPath }/books/delete?did=${book.id }" class="btn btn-danger">삭제</a>
+					<a href="${pageContext.request.contextPath }/books/delete?id=${book.id }" class="btn btn-danger">삭제</a>
 					
 					<a href="${pageContext.request.contextPath }/books" class="btn btn-secondary">도서목록</a>
 				</p>
@@ -42,7 +45,7 @@
 	</main>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container py-4">
@@ -31,7 +31,7 @@
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>
 </body>
 </body>
 </html>
