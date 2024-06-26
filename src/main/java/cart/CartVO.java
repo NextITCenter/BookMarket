@@ -1,8 +1,10 @@
 package cart;
 
+import java.io.Serializable;
+
 import book.BookVO;
 
-public class CartVO {
+public class CartVO implements Serializable {
 	private long no;
 	private BookVO book;
 	private int quantity;

@@ -1,12 +1,13 @@
 package book;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 // 데이터를 저장하는 객체
 // VO, DTO, Item, Bean 등 여러 이름으로 사용
 // VO(Value Object) => 우리나라 현업에서 많이 사용
 // DTO(Data Transfer Object) => 정확한 의미
-public class BookVO {
+public class BookVO implements Serializable {
 	private String id;
 	private String title;
 	private int price;
