@@ -8,6 +8,8 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -39,7 +41,8 @@ public class BookInsertServlet extends HttpServlet {
 		String category = req.getParameter("category");
 		long quantity = req.getParameter("quantity").isEmpty() ?
 				0 : Integer.parseInt(req.getParameter("quantity"));
-		String releaseDate = req.getParameter("releaseDate");
+		LocalDate releaseDate = req.getParameter("releaseDate") != null ?
+				LocalDate.parse(req.getParameter("releaseDate")) : null;
 		String condition = req.getParameter("condition");
 		// 첨부파일은 Part라는 객체(인터페이스)로 처리할 수 있다.
 		Part part = req.getPart("imageFile");
@@ -51,47 +54,14 @@ public class BookInsertServlet extends HttpServlet {
 		Path path = Paths.get("c:\\", "users", "user", "book", "images", filename);
 		// 파일 저장
 		part.write(path.toString());
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
-			StringBuilder builder = new StringBuilder();
-			builder.append("insert into book ");
-			builder.append("	(id, title, price, author, description, publisher, category, quantity, release_date, condition, image_filename) ");
-			builder.append("values ");
-			builder.append("	(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			String sql = builder.toString();
-
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, id);
-			statement.setString(2, title);
-			statement.setInt(3, price);
-			statement.setString(4, author);
-			statement.setString(5, description);
-			statement.setString(6, publisher);
-			statement.setString(7, category);
-			statement.setLong(8, quantity);
-			statement.setDate(9, Date.valueOf(releaseDate));
-			statement.setString(10, condition);
-			statement.setString(11, filename);
-			
-			int executeUpdate = statement.executeUpdate();
-			if (executeUpdate > 0) {
-				resp.sendRedirect(req.getContextPath() + "/books");
-			} else {
-				req.getRequestDispatcher("/WEB-INF/views/book/list.jsp").forward(req, resp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				statement.close();
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		
+		BookService service = BookService.getInstance();
+		int executeUpdate = service.insertBook(new BookVO(id, title, price, author, description, publisher, category, quantity, releaseDate, condition));
+		
+		if (executeUpdate > 0) {
+			resp.sendRedirect(req.getContextPath() + "/books");
+		} else {
+			req.getRequestDispatcher("/WEB-INF/views/book/list.jsp").forward(req, resp);
 		}
 	}
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="book.BookMapper">
+	<select id="selectBooks" resultType="book.BookVO">
+		select
+			id,
+			title,
+			price,
+			author,
+			description,
+			publisher,
+			category,
+			quantity,
+			release_date,
+			condition,
+			image_filename
+		from
+			book
+	</select>
+	<select id="selectBook" parameterType="string" resultType="book.BookVO">
+		select
+			id,
+			title,
+			price,
+			author,
+			description,
+			publisher,
+			category,
+			quantity,
+			release_date,
+			condition,
+			image_filename
+		from
+			book
+		where
+			id = #{id}
+	</select>
+	<insert id="insertBook" parameterType="book.BookVO">
+		insert into
+			book
+			(id, title, price, author, description, publisher, category, quantity, release_date, condition, image_filename)
+		values
+			(#{id}, #{title}, #{price}, #{author}, #{description}, #{publisher}, #{category}, #{quantity}, #{releaseDate}, #{condition}, #{imageFilename})
+	</insert>
+	<update id="updateBook" parameterType="book.BookVO">
+		update
+			book
+		set
+			title = #{title},
+			price = #{price},
+			author = #{author},
+			description = #{description},
+			publisher = #{publisher},
+			category = #{category},
+			quantity = #{quantity},
+			release_date = #{releaseDate},
+			condition = #{condition},
+			image_filename = #{imageFilename}
+		where
+			id = #{id}
+	</update>
+	<delete id="deleteBook" parameterType="string">
+		delete from
+			book
+		where
+			id = #{id}
+	</delete>
+</mapper>
+
+
+
+

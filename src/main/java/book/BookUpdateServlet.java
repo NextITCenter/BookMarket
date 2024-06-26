@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,69 +25,10 @@ public class BookUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String updateId = req.getParameter("id");
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
-			String sql = """
-					select
-						id,
-						title,
-						price,
-						author,
-						publisher,
-						release_date,
-						description,
-						category,
-						quantity,
-						condition,
-						image_filename
-					from
-						book
-					where
-						id = ?
-					""";
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, updateId);
-			resultSet = statement.executeQuery();
-			BookVO book = null;
-			if (resultSet.next()) {
-				String id = resultSet.getString("id");
-				String title = resultSet.getString("title");
-				int price = resultSet.getInt("price");
-				String author = resultSet.getString("author");
-				String publisher = resultSet.getString("publisher");
-				Date releaseDate = resultSet.getDate("release_date");
-				String description = resultSet.getString("description");
-				String category = resultSet.getString("category");
-				long quantity = resultSet.getLong("quantity");
-				String condition = resultSet.getString("condition");
-				String imageFilename = resultSet.getString("image_filename");
-				book = new BookVO(id, title, price, author, description, publisher,
-					category, quantity, releaseDate.toLocalDate(), condition, imageFilename);
-			}
-			req.setAttribute("book", book);
-			req.getRequestDispatcher("/WEB-INF/views/book/update.jsp").forward(req, resp);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		BookService service = BookService.getInstance();
+		BookVO book = service.selectBook(updateId);
+		req.setAttribute("book", book);
+		req.getRequestDispatcher("/WEB-INF/views/book/update.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -94,14 +36,16 @@ public class BookUpdateServlet extends HttpServlet {
 		req.setCharacterEncoding("utf-8");
 		String id = req.getParameter("id");
 		String title = req.getParameter("title");
-		int price = Integer.parseInt(req.getParameter("price"));
+		int price = req.getParameter("price") != null ?
+				Integer.parseInt(req.getParameter("price")) : 0;
 		String author = req.getParameter("author");
 		String description = req.getParameter("description");
 		String publisher = req.getParameter("publisher");
 		String category = req.getParameter("category");
-		Long quantity = Long.parseLong(req.getParameter("quantity"));
-		Date releaseDate = Date.valueOf(req.getParameter("releaseDate"));
+		long quantity = Long.parseLong(req.getParameter("quantity"));
+		LocalDate releaseDate = req.getParameter("releaseDate") != null ? LocalDate.parse(req.getParameter("releaseDate")) : null;
 		String condition = req.getParameter("condition");
+		
 		// 스트림형식으로 업로드된 파일 Part로 가져오기
 		Part part = req.getPart("imageFile");
 		String filename = id + ".jpg";
@@ -110,61 +54,13 @@ public class BookUpdateServlet extends HttpServlet {
 		// 파일 쓰기
 		part.write(path.toString());
 		
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@nextit.or.kr:1521:xe", "web03", "web03");
-			String sql = """
-					update
-						book
-					set
-						title = ?,
-						price = ?,
-						author = ?,
-						description = ?,
-						publisher = ?,
-						category = ?,
-						quantity = ?,
-						release_date = ?,
-						condition = ?,
-						image_filename = ?
-					where
-						id = ?
-					""";
-			statement = connection.prepareStatement(sql);
-			
-			statement.setString(1, title);
-			statement.setInt(2, price);
-			statement.setString(3, author);
-			statement.setString(4, description);
-			statement.setString(5, publisher);
-			statement.setString(6, category);
-			statement.setLong(7, quantity);
-			statement.setDate(8, releaseDate);
-			statement.setString(9, condition);
-			statement.setString(10, filename);
-			statement.setString(11, id);
-			
-			int executeUpdate = statement.executeUpdate();
-			if (executeUpdate > 0) {
-				resp.sendRedirect(req.getContextPath() + "/books");
-			} else {
-				req.getRequestDispatcher("/WEB-INF/views/book/update.jsp").forward(req, resp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		BookService service = BookService.getInstance();
+		int executeUpdate = service.updateBook(new BookVO(id, title, price, author, description, publisher, category, quantity, releaseDate, condition, filename));
+		
+		if (executeUpdate > 0) {
+			resp.sendRedirect(req.getContextPath() + "/books");
+		} else {
+			req.getRequestDispatcher("/WEB-INF/views/book/update.jsp").forward(req, resp);
 		}
 
 	}

@@ -34,7 +34,7 @@
 				<p>${book.price }</p>
 				<p>
 					<a href="#" class="btn btn-info">도서주문</a>
-					
+					<a href="${pageContext.request.contextPath }/cart/add?id=${book.id}" class="btn btn-success">장바구니 담기</a>
 					<a href="${pageContext.request.contextPath }/books/update?id=${book.id }" class="btn btn-warning">수정</a>
 					<a href="${pageContext.request.contextPath }/books/delete?id=${book.id }" class="btn btn-danger">삭제</a>
 					
