@@ -54,7 +54,8 @@ public class CartAddServlet extends HttpServlet {
 		}
 		// 위의 반복문을 StreamAPI를 사용해서 변경
 		session.setAttribute("carts", carts);
-		req.getRequestDispatcher("/WEB-INF/views/cart/list.jsp").forward(req, resp);
+//		req.getRequestDispatcher("/WEB-INF/views/cart/list.jsp").forward(req, resp);
+		resp.sendRedirect(req.getContextPath() + "/carts");
 	}
 }
 
