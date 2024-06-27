@@ -20,5 +20,6 @@
 	</environments>
 	<mappers>
 		<mapper resource="book-mapper.xml" />
+		<mapper resource="login-mapper.xml" />
 	</mappers>
 </configuration>
