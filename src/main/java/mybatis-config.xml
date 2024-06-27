@@ -21,5 +21,6 @@
 	<mappers>
 		<mapper resource="book-mapper.xml" />
 		<mapper resource="login-mapper.xml" />
+		<mapper resource="board-mapper.xml" />
 	</mappers>
 </configuration>
