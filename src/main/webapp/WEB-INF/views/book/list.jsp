@@ -7,7 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>도서 목록</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css"></head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css">
+</head>
 <body>
 <div class="container py-4">
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
