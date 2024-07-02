@@ -49,7 +49,13 @@ public class LoginServlet extends HttpServlet {
 				cookie.setMaxAge(0);
 				resp.addCookie(cookie);
 			}
-			resp.sendRedirect(req.getContextPath() + "/");
+			// 세션에 retUrl이라는 값이 존재하면 그 주소로 요청을 보내고
+			// 없으면 메인화면으로 보낸다.
+			String retUrl = (String) session.getAttribute("retUrl");
+			String url = retUrl != null ? retUrl : req.getContextPath() + "/";
+			resp.sendRedirect(url);
+			// 세션에 남아 있는 retUrl 제거
+			session.removeAttribute("retUrl");
 		} else {
 			req.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
 			req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);

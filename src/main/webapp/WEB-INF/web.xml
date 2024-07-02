@@ -20,4 +20,43 @@
   	<url-pattern>*.webp</url-pattern>
   	<url-pattern>*.gif</url-pattern>
   </servlet-mapping>
+  <!-- 필터 클래스 정보 -->
+  <filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>common.EncodingFilter</filter-class>
+  </filter>
+  <!-- 요청하는 url 패턴 정보 -->
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>sessionCheck</filter-name>
+  	<filter-class>common.MemberCheckFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>sessionCheck</filter-name>
+  	<url-pattern>/boards/insert</url-pattern>
+  	<url-pattern>/boards/update</url-pattern>
+  </filter-mapping>
+  
+  <listener>
+  	<display-name>mybatis</display-name>
+  	<listener-class>common.MyBatisListener</listener-class>
+  </listener>
 </web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+

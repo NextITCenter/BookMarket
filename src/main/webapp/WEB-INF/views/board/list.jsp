@@ -13,6 +13,7 @@
 <div class="container py-4">
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
 	<main>
+		<a href="${pageContext.request.contextPath }/boards/insert" class="btn btn-primary">게시글 등록</a>
 		<table class="table">
 			<tr>
 				<th>번호</th>

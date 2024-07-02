@@ -14,6 +14,17 @@ public class BoardVO {
 	private LocalDateTime modifiedDate;
 	public BoardVO() {
 	}
+	public BoardVO(String title, String content, String writer) {
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+	}
+	public BoardVO(long no, String title, String content, String writer) {
+		this.no = no;
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+	}
 	public BoardVO(long no, String title, String content, String writer, String name, int hits,
 			LocalDateTime registerDate, LocalDateTime modifiedDate) {
 		this.no = no;

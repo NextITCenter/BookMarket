@@ -13,17 +13,17 @@
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 	<main>
 		<div class="align-items-md-stretch">
-			<form action="${pageContext.request.contextPath }/boards/insert" method="post">
+			<form action="${pageContext.request.contextPath }/boards/update" method="post">
 				<div class="row my-3">
 					<label class="col-md-2">제목</label>
 					<div class="col-md-5">
-						<input type="text" name="title" class="form-control">
+						<input type="text" name="title" class="form-control" value="${board.title }">
 					</div>
 				</div>
 				<div class="row my-3">
 					<label class="col-md-2">내용</label>
 					<div class="col-md-5">
-						<textarea name="content" class="form-control" rows="7"></textarea>
+						<textarea name="content" class="form-control" rows="7">${board.content }</textarea>
 					</div>
 				</div>
 				<div class="row my-3">
@@ -36,7 +36,9 @@
 				</div>
 				<div class="row my-3">
 					<div class="col-md-7 d-grid">
-						<button type="submit" class="btn btn-primary">등록</button>
+						<input type="hidden" name="no" value="${board.no }">
+						<input type="hidden" name="writer" value="${sessionScope.member.email }">
+						<button type="submit" class="btn btn-primary">수정</button>
 					</div>
 				</div>
 			</form>

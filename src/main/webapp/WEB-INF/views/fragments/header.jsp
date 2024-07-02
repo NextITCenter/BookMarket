@@ -12,6 +12,7 @@
 			<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href='<c:url value="/books"/>'>도서 목록</a>
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/insert">도서 등록</a>
+				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/boards">게시판</a>
 			<c:choose>
 			<c:when test="${empty sessionScope.member }">
 				<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/login">로그인</a>

@@ -3,20 +3,73 @@
 
 <mapper namespace="board.BoardMapper">
 	<select id="selectBoards" resultType="board.BoardVO">
-		select
-			a.no,
-			a.title,
-			a.content,
-			a.writer,
-			b.name,
-			a.hits,
-			a.register_date,
-			a.modified_date
-		from
-			board a
-			inner join member b on a.writer = b.email
+		SELECT
+			A.NO,
+			A.TITLE,
+			A.CONTENT,
+			A.WRITER,
+			B.NAME,
+			A.HITS,
+			A.REGISTER_DATE,
+			A.MODIFIED_DATE
+		FROM
+			BOARD A
+			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
 	</select>
+	<select id="selectBoard" parameterType="long" resultType="boardVO">
+		SELECT
+			A.NO,
+			A.TITLE,
+			A.CONTENT,
+			A.WRITER,
+			B.NAME,
+			A.HITS,
+			A.REGISTER_DATE,
+			A.MODIFIED_DATE
+		FROM
+			BOARD A
+			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+		WHERE
+			A.NO = #{no}
+	</select>
+	<insert id="insertBoard" parameterType="boardVO">
+		INSERT INTO
+			BOARD
+			(TITLE, CONTENT, WRITER)
+		VALUES
+			(#{title}, #{content}, #{writer})
+	</insert>
+	<update id="updateBoard" parameterType="boardVO">
+		UPDATE
+			BOARD
+		SET
+			TITLE = #{title},
+			CONTENT = #{content},
+			WRITER = #{writer},
+			MODIFIED_DATE = SYSDATE
+		WHERE
+			NO = #{no}
+	</update>
+	<delete id="deleteBoard" parameterType="long">
+		DELETE FROM
+			BOARD
+		WHERE
+			NO = #{no}
+	</delete>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
