@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.nextit.bookmarket.board.BoardMapper">
+	<select id="selectBoardsTotalCount" parameterType="searchVO">
+		SELECT
+			COUNT(*)
+		FROM
+			BOARD A
+			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+		<where>
+			<if test="searchType == 'T'">
+				A.TITLE LIKE '%' || #{searchWord} || '%'
+			</if>
+			<if test="searchType == 'C'">
+				AND A.CONTENT LIKE '%' || #{searchWord} || '%'
+			</if>
+			<if test="searchType == 'W'">
+				AND B.NAME LIKE '%' || #{searchWord} || '%'
+			</if>
+		</where>
+		ORDER BY
+			A.NO desc
+	</select>
+	<select id="selectBoards" parameterType="searchVO" resultType="boardVO">
+		SELECT
+			*
+		FROM (
+			SELECT
+				ROWNUM AS RNUM, C.*
+			FROM (
+				SELECT
+					A.NO,
+					A.TITLE,
+					A.CONTENT,
+					A.WRITER,
+					B.NAME,
+					A.HITS,
+					A.REGISTER_DATE,
+					A.MODIFIED_DATE
+				FROM
+					BOARD A
+					INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+				<where>
+					<if test="searchType == 'T'">
+						A.TITLE LIKE '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'C'">
+						AND A.CONTENT LIKE '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'W'">
+						AND B.NAME LIKE '%' || #{searchWord} || '%'
+					</if>
+				</where>
+				ORDER BY
+					A.NO desc
+			) C
+		)
+		WHERE
+			RNUM BETWEEN #{firstRecordIndex} AND #{lastRecordIndex}
+	</select>
+	<select id="selectBoard" parameterType="long" resultType="boardVO">
+		SELECT
+			A.NO,
+			A.TITLE,
+			A.CONTENT,
+			A.WRITER,
+			B.NAME,
+			A.HITS,
+			A.REGISTER_DATE,
+			A.MODIFIED_DATE
+		FROM
+			BOARD A
+			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+		WHERE
+			A.NO = #{no}
+	</select>
+	<insert id="insertBoard" parameterType="boardVO">
+		INSERT INTO
+			BOARD
+			(TITLE, CONTENT, WRITER)
+		VALUES
+			(#{title}, #{content}, #{writer})
+	</insert>
+	<update id="updateBoard" parameterType="boardVO">
+		UPDATE
+			BOARD
+		SET
+			TITLE = #{title},
+			CONTENT = #{content},
+			WRITER = #{writer},
+			MODIFIED_DATE = SYSDATE
+		WHERE
+			NO = #{no}
+	</update>
+	<delete id="deleteBoard" parameterType="long">
+		DELETE FROM
+			BOARD
+		WHERE
+			NO = #{no}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

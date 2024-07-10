@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--
+     Spring MVC에서 @Controller 관련 설정부분이 7개 정도 더 필요한데 그 부분을 간단하게 활성화
+     시킬 수 있는 설정
+     -->
+    <mvc:annotation-driven />
+    <!--
+     베이스 패키지에 포함된 @Controller, @Service, @Repository, @Component
+     annotation이 붙은 모든 클래스를 검색해서 빈으로 등록한다.
+     -->
+    <!-- servlet-context.xml에서는 Controller와 뷰와 관련된 설정만 하는 것이 좋다. -->
+    <context:component-scan base-package="kr.or.nextit.bookmarket">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
+    <!--
+     multipart/form-data를 해결하기 위한 bean 등록
+     id=> 반드시 multipartResolver 로 입력해야한다.
+     -->
+    <bean id="multipartResolver"
+            class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>
