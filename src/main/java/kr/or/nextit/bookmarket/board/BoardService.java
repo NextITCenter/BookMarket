@@ -3,14 +3,15 @@ package kr.or.nextit.bookmarket.board;
 import java.util.List;
 
 import kr.or.nextit.bookmarket.common.SearchVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class BoardService {
 	private final BoardMapper mapper;
-	public BoardService(BoardMapper mapper) {
-		this.mapper = mapper;
-	}
+	private final FileMapper fileMapper;
+
 	public int selectBoardsTotalCount(SearchVO search) {
 		return mapper.selectBoardsTotalCount(search);
 	}
@@ -18,13 +19,23 @@ public class BoardService {
 	public List<BoardVO> selectBoards(SearchVO search) {
 		return mapper.selectBoards(search);
 	}
-	
+
 	public BoardVO selectBoard(long no) {
+		mapper.updateHits(no);
 		return mapper.selectBoard(no);
 	}
 	
 	public int insertBoard(BoardVO board) {
-		return mapper.insertBoard(board);
+		// insert가 끝나면 board 인스턴스에는 no 필드에 방금 insert한 데이터의
+		// pk값이 들어가 있다.
+		int insertedValue = mapper.insertBoard(board);
+		List<FileVO> fileList = board.getFileList();
+//		fileList.forEach(f -> f.setBoardNo(board.getNo()));
+		for (FileVO file : fileList) {
+			file.setBoardNo(board.getNo());
+		}
+		fileMapper.saveFiles(fileList);
+		return insertedValue;
 	}
 	
 	public int updateBoard(BoardVO board) {
@@ -33,6 +44,10 @@ public class BoardService {
 	
 	public int deleteBoard(long no) {
 		return mapper.deleteBoard(no);
+	}
+
+	public FileVO selectFile(int id) {
+		return fileMapper.selectFile(id);
 	}
 }
 

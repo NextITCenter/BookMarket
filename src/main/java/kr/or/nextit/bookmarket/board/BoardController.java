@@ -3,12 +3,28 @@ package kr.or.nextit.bookmarket.board;
 import kr.or.nextit.bookmarket.common.PaginationInfo;
 import kr.or.nextit.bookmarket.common.SearchVO;
 import kr.or.nextit.bookmarket.login.MemberVO;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class BoardController {
@@ -59,10 +75,34 @@ public class BoardController {
 
     @PostMapping("/boards/insert")
     // @ModelAttribute: 커맨드객체라고 한다.
-    public String insertBoard(@ModelAttribute BoardVO board, HttpSession session) {
+    public String insertBoard(@ModelAttribute BoardVO board, List<MultipartFile> files, HttpSession session) throws IOException {
+        // 첨부파일 등록(물리적인 위치로 저장)
+        // 물리적 위치의 파일명은 UUID를 사용하여 만든다.
+        Path path = Paths.get("c:\\", "users", "user", "book", "attachment");
+        List<FileVO> fileList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            FileVO vo = new FileVO();
+            String fileName = UUID.randomUUID().toString();
+            vo.setFileName(fileName);
+            vo.setOriginalName(file.getOriginalFilename());
+            vo.setFileSize(file.getSize());
+            vo.setFilePath(path.toString());
+            fileList.add(vo);
+
+            if (Files.notExists(path)) {
+                // 경로가 없으면 원하는 디렉토리 생성
+                Files.createDirectory(path);
+            }
+            // 실제 경로에 첨부파일을 등록
+            file.transferTo(Paths.get(path.toString(), fileName));
+        }
+        
+        // 게시글 등록
         MemberVO member = (MemberVO) session.getAttribute("member");
         String writer = member.getEmail();
         board.setWriter(writer);
+        board.setFileList(fileList);
+
         service.insertBoard(board);
         return "redirect:/boards";
     }
@@ -88,5 +128,25 @@ public class BoardController {
     public String deleteBoard(long no) {
         service.deleteBoard(no);
         return "redirect:/boards";
+    }
+
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> download(@PathVariable int fileId, HttpServletResponse resp) throws IOException {
+        // ResponseEntity: 응답 객체 => 파일, json, xml
+        // ResponseEntity<Resource> => 파일 등등과 같은 리소스를 응답해준다.
+        FileVO file = service.selectFile(fileId);
+
+        Path path = Paths.get(file.getFilePath(), file.getFileName());
+        // 한글 파일의 경우 정상적으로 파일 이름이 안나오는 경우가 발생한다.
+        String filename = URLEncoder.encode(file.getOriginalName(), StandardCharsets.UTF_8);
+
+        FileUrlResource resource = new FileUrlResource(path.toString());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(file.getFileSize())
+                .header(HttpHeaders.PRAGMA, "no-cache")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + filename + "\";")
+                .body(resource);
     }
 }

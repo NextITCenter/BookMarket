@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.or.nextit.bookmarket.board.BoardMapper">
+	<resultMap id="boardMap" type="boardVO">
+		<result property="no" column="no"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="writer" column="writer"/>
+		<result property="hits" column="hits"/>
+		<result property="registerDate" column="register_date"/>
+		<result property="modifiedDate" column="modified_date"/>
+		<collection property="fileList" select="selectFiles" column="no" javaType="list" ofType="fileVO"/>
+	</resultMap>
 	<select id="selectBoardsTotalCount" parameterType="searchVO">
 		SELECT
 			COUNT(*)
@@ -57,9 +67,9 @@
 			) C
 		)
 		WHERE
-			RNUM BETWEEN #{firstRecordIndex} AND #{lastRecordIndex}
+			RNUM BETWEEN #{firstRecordIndex} + 1 AND #{lastRecordIndex}
 	</select>
-	<select id="selectBoard" parameterType="long" resultType="boardVO">
+	<select id="selectBoard" parameterType="long" resultMap="boardMap">
 		SELECT
 			A.NO,
 			A.TITLE,
@@ -75,7 +85,32 @@
 		WHERE
 			A.NO = #{no}
 	</select>
-	<insert id="insertBoard" parameterType="boardVO">
+	<select id="selectFiles" parameterType="long" resultType="fileVO">
+		SELECT
+			ID,
+			BOARD_NO,
+			FILE_PATH,
+			FILE_NAME,
+			ORIGINAL_NAME,
+			FILE_SIZE,
+			REGISTER_DATE
+		FROM
+			ATTACHED_FILE
+		WHERE
+			BOARD_NO = #{boardNo}
+		ORDER BY
+			ID
+	</select>
+	<update id="updateHits" parameterType="long">
+		UPDATE
+			BOARD
+		SET
+			HITS = HITS + 1
+		WHERE
+			NO = #{no}
+	</update>
+	<insert id="insertBoard" parameterType="boardVO" useGeneratedKeys="true"
+			keyColumn="no" keyProperty="no">
 		INSERT INTO
 			BOARD
 			(TITLE, CONTENT, WRITER)

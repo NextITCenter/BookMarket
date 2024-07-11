@@ -13,6 +13,8 @@ public interface BoardMapper {
 
 	BoardVO selectBoard(long no);
 
+	void updateHits(long no);
+
 	int insertBoard(BoardVO board);
 
 	int updateBoard(BoardVO board);

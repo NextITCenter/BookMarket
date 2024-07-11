@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -28,8 +29,10 @@
 			<div class="row my-3">
 				<div class="col-md-7 d-grid">
 					<div class="input-group">
-						<label class="input-group-text" for="files">첨부파일</label>
-						<input type="file" class="form-control" id="files" name="files">
+						<label class="input-group-text">첨부파일</label>
+						<c:forEach items="${board.fileList}" var="file">
+							<a href="/download/${file.id}">${file.originalName}</a>
+						</c:forEach>
 					</div>
 				</div>
 			</div>

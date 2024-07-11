@@ -94,7 +94,7 @@ public class BookController {
         // 응답 헤더에 파일 이름, 컨텐트 타입, 캐시여부 등등 설정
         resp.setHeader("Content-Type", "application/octet-stream");
         resp.setHeader("Pragma", "no-cache");
-        resp.setHeader("Content-Disposition", "attachement;filename=" + filename + ";");
+        resp.setHeader("Content-Disposition", "attachment;filename=" + filename + ";");
         // 파일을 스트림으로 전송한다.
         OutputStream outputStream = resp.getOutputStream();
         // Paths, Files를 활용하면 간단하게 파일을 관리할 수 있다.

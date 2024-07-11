@@ -13,7 +13,7 @@
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 	<main>
 		<div class="align-items-md-stretch">
-			<form action="${pageContext.request.contextPath }/boards/insert" method="post">
+			<form action="${pageContext.request.contextPath }/boards/insert" method="post" enctype="multipart/form-data">
 				<div class="row my-3">
 					<label class="col-md-2">제목</label>
 					<div class="col-md-5">
@@ -30,8 +30,7 @@
 					<div class="col-md-7 d-grid">
 						<div class="input-group">
 							<label class="input-group-text" for="files">첨부파일</label>
-							<input type="file" class="form-control" id="files" name="files">
-						</div>
+							<input type="file" class="form-control" id="files" name="files" multiple>						</div>
 					</div>
 				</div>
 				<div class="row my-3">

@@ -14,6 +14,15 @@
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
 	<main>
 		<a href="${pageContext.request.contextPath }/boards/insert" class="btn btn-primary">게시글 등록</a>
+		<form action="${pageContext.request.contextPath }/boards" method="get">
+			<select name="searchType">
+				<option value="T">제목</option>
+				<option value="C">내용</option>
+				<option value="W">작성자</option>
+			</select>
+			<input type="search" name="searchWord">
+			<button>검색</button>
+		</form>
 		<table class="table">
 			<tr>
 				<th>번호</th>
