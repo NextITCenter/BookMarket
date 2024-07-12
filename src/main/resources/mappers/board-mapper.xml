@@ -19,13 +19,13 @@
 			BOARD A
 			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
 		<where>
-			<if test="searchType == 'T'">
+			<if test='searchType == "T"'>
 				A.TITLE LIKE '%' || #{searchWord} || '%'
 			</if>
-			<if test="searchType == 'C'">
+			<if test='searchType == "C"'>
 				AND A.CONTENT LIKE '%' || #{searchWord} || '%'
 			</if>
-			<if test="searchType == 'W'">
+			<if test='searchType == "W"'>
 				AND B.NAME LIKE '%' || #{searchWord} || '%'
 			</if>
 		</where>
@@ -52,13 +52,13 @@
 					BOARD A
 					INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
 				<where>
-					<if test="searchType == 'T'">
+					<if test='searchType == "T"'>
 						A.TITLE LIKE '%' || #{searchWord} || '%'
 					</if>
-					<if test="searchType == 'C'">
+					<if test='searchType == "C"'>
 						AND A.CONTENT LIKE '%' || #{searchWord} || '%'
 					</if>
-					<if test="searchType == 'W'">
+					<if test='searchType == "W"'>
 						AND B.NAME LIKE '%' || #{searchWord} || '%'
 					</if>
 				</where>
