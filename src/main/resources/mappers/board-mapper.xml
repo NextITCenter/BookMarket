@@ -11,6 +11,7 @@
 		<result property="registerDate" column="register_date"/>
 		<result property="modifiedDate" column="modified_date"/>
 		<collection property="fileList" select="selectFiles" column="no" javaType="list" ofType="fileVO"/>
+		<collection property="commentList" select="selectComments" column="no" javaType="list" ofType="commentVO"/>
 	</resultMap>
 	<select id="selectBoardsTotalCount" parameterType="searchVO">
 		SELECT
@@ -100,6 +101,23 @@
 			BOARD_NO = #{boardNo}
 		ORDER BY
 			ID
+	</select>
+	<select id="selectComments" parameterType="long" resultType="commentVO">
+		SELECT
+			A.ID,
+			A.BOARD_NO,
+			A.CONTENT,
+			A.WRITER,
+			B.NAME,
+			A.REGISTER_DATE,
+			A.MODIFIED_DATE
+		FROM
+			COMMENTS A
+			INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+		WHERE
+			BOARD_NO = #{boardNo}
+		ORDER BY
+			REGISTER_DATE
 	</select>
 	<update id="updateHits" parameterType="long">
 		UPDATE

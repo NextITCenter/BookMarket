@@ -34,7 +34,7 @@ public class BoardController {
 
     @RequestMapping(value = "/boards", method = RequestMethod.GET)
     // Model: 응답페이지에 데이터를 전달할 때 사용
-    public String selectBoards(SearchVO search, @RequestParam(value = "requestPageNo", defaultValue = "1") int requestPageNo, Model model) {
+    public String selectBoards(@ModelAttribute("search") SearchVO search, @RequestParam(value = "requestPageNo", defaultValue = "1") int requestPageNo, Model model) {
         // 전체 페이지 갯수 가져오기
         int totalCount = service.selectBoardsTotalCount(search);
         // 페이지 정보 만들기
@@ -77,24 +77,29 @@ public class BoardController {
         // 첨부파일 등록(물리적인 위치로 저장)
         // 물리적 위치의 파일명은 UUID를 사용하여 만든다.
         Path path = Paths.get("c:\\", "users", "user", "book", "attachment");
+        if (!files.isEmpty()) {
+
+        }
         List<FileVO> fileList = new ArrayList<>();
         for (MultipartFile file : files) {
-            FileVO vo = new FileVO();
-            String fileName = UUID.randomUUID().toString();
-            vo.setFileName(fileName);
-            vo.setOriginalName(file.getOriginalFilename());
-            vo.setFileSize(file.getSize());
-            vo.setFilePath(path.toString());
-            fileList.add(vo);
+            if (!file.isEmpty()) {
+                FileVO vo = new FileVO();
+                String fileName = UUID.randomUUID().toString();
+                vo.setFileName(fileName);
+                vo.setOriginalName(file.getOriginalFilename());
+                vo.setFileSize(file.getSize());
+                vo.setFilePath(path.toString());
+                fileList.add(vo);
 
-            if (Files.notExists(path)) {
-                // 경로가 없으면 원하는 디렉토리 생성
-                Files.createDirectory(path);
+                if (Files.notExists(path)) {
+                    // 경로가 없으면 원하는 디렉토리 생성
+                    Files.createDirectory(path);
+                }
+                // 실제 경로에 첨부파일을 등록
+                file.transferTo(Paths.get(path.toString(), fileName));
             }
-            // 실제 경로에 첨부파일을 등록
-            file.transferTo(Paths.get(path.toString(), fileName));
         }
-        
+
         // 게시글 등록
         MemberVO member = (MemberVO) session.getAttribute("member");
         String writer = member.getEmail();

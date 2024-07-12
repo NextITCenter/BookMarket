@@ -16,4 +16,5 @@ public class BoardVO {
 	private LocalDateTime registerDate;
 	private LocalDateTime modifiedDate;
 	private List<FileVO> fileList;
+	private List<CommentVO> commentList;
 }

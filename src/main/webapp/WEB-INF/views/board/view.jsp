@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css"></head>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container py-4">
@@ -43,6 +43,20 @@
 				</div>
 			</div>
 		</div>
+		<form action="/comments/new" method="post">
+			<div class="row">
+				<div class="col-5">
+					<div class="form-floating">
+						<textarea class="form-control" id="content" name="content"></textarea>
+						<label for="content">Comments</label>
+					</div>
+				</div>
+				<div class="col-2">
+					<input type="hidden" name="boardNo" value="${board.no}">
+					<button class="btn btn-primary">등록</button>
+				</div>
+			</div>
+		</form>
 	</main>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 </div>

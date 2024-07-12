@@ -16,11 +16,12 @@
 		<a href="${pageContext.request.contextPath }/boards/insert" class="btn btn-primary">게시글 등록</a>
 		<form action="${pageContext.request.contextPath }/boards" method="get">
 			<select name="searchType">
-				<option value="T">제목</option>
-				<option value="C">내용</option>
-				<option value="W">작성자</option>
+				<option value="T" ${search.searchType == 'T'?'selected':''}>제목</option>
+				<option value="C" ${search.searchType == 'C'?'selected':''}>내용</option>
+				<option value="W" ${search.searchType == 'W'?'selected':''}>작성자</option>
 			</select>
-			<input type="search" name="searchWord">
+			<input type="search" name="searchWord" value="${search.searchWord}">
+			<input type="hidden" name="requestPageNo" value="1">
 			<button>검색</button>
 		</form>
 		<table class="table">
@@ -46,7 +47,7 @@
 				<li class="page-item">
 					<c:choose>
 						<c:when test="${pagination.currentPageNo > 1}">
-							<a class="page-link" href="${pageContext.request.contextPath }/boards?requestPageNo=${pagination.currentPageNo - 1}" aria-label="Previous">
+							<a class="page-link" href="${pageContext.request.contextPath }/boards?requestPageNo=${pagination.currentPageNo - 1}&searchType=${search.searchType}&searchWord=${search.searchWord}" aria-label="Previous">
 								<span aria-hidden="true">&laquo;</span>
 							</a>
 						</c:when>
@@ -64,7 +65,7 @@
 				 -->
 				<c:forEach begin="${pagination.firstPageNoOnPageList}" end="${pagination.lastPageNoOnPageList}" var="pageNo">
 					<li class="page-item">
-						<a class="page-link ${pagination.currentPageNo == pageNo?'active':''}" href="${pageContext.request.contextPath }/boards?requestPageNo=${pageNo}">
+						<a class="page-link ${pagination.currentPageNo == pageNo?'active':''}" href="${pageContext.request.contextPath }/boards?requestPageNo=${pageNo}&searchType=${search.searchType}&searchWord=${search.searchWord}">
 							${pageNo}
 						</a>
 					</li>
@@ -78,7 +79,7 @@
 							</a>
 						</c:when>
 						<c:otherwise>
-							<a class="page-link" href="${pageContext.request.contextPath }/boards?requestPageNo=${pagination.currentPageNo + 1}" aria-label="Next">
+							<a class="page-link" href="${pageContext.request.contextPath }/boards?requestPageNo=${pagination.currentPageNo + 1}&searchType=${search.searchType}&searchWord=${search.searchWord}" aria-label="Next">
 								<span aria-hidden="true">&raquo;</span>
 							</a>
 						</c:otherwise>
