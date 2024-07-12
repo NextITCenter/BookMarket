@@ -13,10 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -28,7 +26,7 @@ import java.util.UUID;
 
 @Controller
 public class BoardController {
-    private BoardService service;
+    private final BoardService service;
     // 생성자 주입방식을 명시적으로 써주면 자동으로 스프링 빈이 주입된다.(DI)
     public BoardController(BoardService service) {
         this.service = service;
@@ -131,7 +129,7 @@ public class BoardController {
     }
 
     @GetMapping("/download/{fileId}")
-    public ResponseEntity<Resource> download(@PathVariable int fileId, HttpServletResponse resp) throws IOException {
+    public ResponseEntity<Resource> download(@PathVariable int fileId) throws IOException {
         // ResponseEntity: 응답 객체 => 파일, json, xml
         // ResponseEntity<Resource> => 파일 등등과 같은 리소스를 응답해준다.
         FileVO file = service.selectFile(fileId);
