@@ -52,11 +52,27 @@
 					</div>
 				</div>
 				<div class="col-2">
-					<input type="hidden" name="boardNo" value="${board.no}">
-					<button class="btn btn-primary">등록</button>
+					<input type="hidden" id="boardNo" name="boardNo" value="${board.no}">
+					<button type="button" id="insertBtn" class="btn btn-primary">등록</button>
 				</div>
 			</div>
 		</form>
+		<div class="row">
+			<div class="col-7">
+				<div class="list-group" id="commentsArea">
+					<c:forEach items="${board.commentList}" var="comment">
+						<a href="#" class="list-group-item list-group-item-action" aria-current="true">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1">${comment.content}</h5>
+								<small>${comment.writer}</small>
+							</div>
+							<p class="mb-1"></p>
+							<small>${comment.registerDate}</small>
+						</a>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
 	</main>
 	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 </div>
@@ -72,7 +88,72 @@
 			alert("삭제를 취소합니다.");
 		}
 	})
+	const insertBtn = document.querySelector("#insertBtn");
+	const commentsArea = document.querySelector("#commentsArea")
+	insertBtn.addEventListener("click", () => {
+		// Ajax 방식으로 데이터 전송
+		// XMLHTTPRequest 객체 대신 jQuery 라이브러리의 $.ajax() 함수를 많이 사용
+		// fetch라는 함수를 제공 (ES5 인지 ES6인지 헷갈림)
+		fetch("/comments/new", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				content: document.querySelector("#content").value,
+				boardNo: document.querySelector("#boardNo").value
+			})
+		})
+				.then(response => response.json())
+				.then(data => {
+					// 1. 직접 자바스크립트를 이용해서 html 태그 생성
+					// const aTag = document.createElement("a");
+					// aTag.classList.add("list-group-item", "list-group-item-action")
+					// const divTag = document.createElement("div");
+					// const pTag = document.createElement("p");
+					// const smallTag = document.createElement("small");
+					// smallTag.textContent = data.registerDate;
+					//
+					// aTag.append(divTag, pTag, smallTag);
+					//
+					// const h5Tag = document.createElement("h5")
+					// const smallInDivTag = document.createElement("small")
+					//
+					// h5Tag.textContent = data.content;
+					// smallInDivTag.textContent = data.writer;
+					//
+					// divTag.append(h5Tag, smallInDivTag);
+					//
+					// commentsArea.appendChild(aTag);
+					// 2. innerHTML 속성을 활용하는 방법
+					// commentsArea.innerHTML +=
+					// 		'<a href="#" class="list-group-item list-group-item-action" aria-current="true">' +
+					// 		'<div class="d-flex w-100 justify-content-between">' +
+					// 		`<h5 class="mb-1">\${data.content}</h5>` +
+					// 		`<small>\${data.writer}</small>` +
+					// 		'</div>' +
+					// 		'<p class="mb-1"></p>' +
+					// 		`<small>\${data.registerDate}</small>` +
+					// 		'</a>';
+					// 3. html에 숨김 화면으로 템플릿을 만들고 그 템플릿을 가져와서 사용
+					const commentTemplate = document.querySelector("#commentTemplate").cloneNode(true);
+					commentTemplate.querySelector("h5").textContent = data.content;
+					commentTemplate.querySelector("div>small").textContent = data.writer;
+					commentTemplate.querySelector("small.date").textContent = data.registerDate;
+					commentsArea.appendChild(commentTemplate);
+					const contentArea = document.querySelector("#content")
+					contentArea.value = "";
+				});
+	})
 </script>
+<a href="#" id="commentTemplate" class="list-group-item list-group-item-action" aria-current="true">
+	<div class="d-flex w-100 justify-content-between">
+		<h5 class="mb-1"></h5>
+		<small></small>
+	</div>
+	<p class="mb-1"></p>
+	<small class="date"></small>
+</a>
 </body>
 </html>
 

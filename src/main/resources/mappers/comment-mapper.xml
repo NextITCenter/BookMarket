@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.nextit.bookmarket.comment.CommentMapper">
+    <insert id="insertComment" parameterType="commentVO"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO
+            COMMENTS
+            (BOARD_NO, CONTENT, WRITER)
+        VALUES
+            (#{boardNo}, #{content}, #{writer})
+    </insert>
+    <select id="selectComment" parameterType="int" resultType="commentVO">
+        SELECT
+            A.ID,
+            A.BOARD_NO,
+            A.CONTENT,
+            A.WRITER,
+            B.NAME,
+            A.REGISTER_DATE,
+            A.MODIFIED_DATE
+        FROM
+            COMMENTS A
+            INNER JOIN MEMBER B ON A.WRITER = B.EMAIL
+        WHERE
+            A.ID = #{id}
+    </select>
+</mapper>
+
+
+
+

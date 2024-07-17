@@ -1,5 +1,6 @@
 package kr.or.nextit.bookmarket.board;
 
+import kr.or.nextit.bookmarket.comment.CommentVO;
 import lombok.Data;
 
 import java.time.LocalDateTime;

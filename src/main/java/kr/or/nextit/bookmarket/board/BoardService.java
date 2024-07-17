@@ -22,7 +22,7 @@ public class BoardService {
 	}
 	@Transactional
 	public BoardVO selectBoard(long no) {
-		mapper.updateHits(no);
+//		mapper.updateHits(no);
 		return mapper.selectBoard(no);
 	}
 	@Transactional
