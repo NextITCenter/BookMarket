@@ -3,18 +3,18 @@
 
 <mapper namespace="kr.or.nextit.bookmarket.login.LoginMapper">
 	<select id="findByEmailAndPassword" parameterType="loginVO" resultType="memberVO">
-		select
-			id,
-			email,
-			password,
-			name,
-			register_date,
-			modified_date
-		from
-			member
-		where
-			email = #{email}
-			and password = #{password}
+		SELECT
+			ID,
+			EMAIL,
+			PASSWORD,
+			NAME,
+			REGISTER_DATE,
+			MODIFIED_DATE
+		FROM
+			MEMBER
+		WHERE
+			EMAIL = #{email}
+			AND PASSWORD = #{password}
 	</select>
 </mapper>
 

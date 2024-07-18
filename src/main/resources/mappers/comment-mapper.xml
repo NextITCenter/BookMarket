@@ -25,6 +25,12 @@
         WHERE
             A.ID = #{id}
     </select>
+    <delete id="deleteComment" parameterType="long">
+        DELETE FROM
+            COMMENTS
+        WHERE
+            BOARD_NO = #{boardNo}
+    </delete>
 </mapper>
 
 

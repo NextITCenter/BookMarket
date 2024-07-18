@@ -27,6 +27,12 @@
         WHERE
             ID = #{id}
     </select>
+    <delete id="deleteFile" parameterType="long">
+        DELETE FROM
+            ATTACHED_FILE
+        WHERE
+            BOARD_NO = #{boardNo}
+    </delete>
 </mapper>
 
 

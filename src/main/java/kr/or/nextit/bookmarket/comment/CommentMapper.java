@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CommentMapper {
     void insertComment(CommentVO comment);
     CommentVO selectComment(int id);
+    void deleteComment(long boardNo);
 }

@@ -12,4 +12,5 @@ public interface FileMapper {
     List<FileVO> selectFiles(int boardNo);
     // 한 개의 파일을 다운로드 할 때 파일 정보 가져오기
     FileVO selectFile(int id);
+    void deleteFile(long boardNo);
 }

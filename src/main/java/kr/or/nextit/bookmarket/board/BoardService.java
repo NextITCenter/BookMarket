@@ -2,6 +2,7 @@ package kr.or.nextit.bookmarket.board;
 
 import java.util.List;
 
+import kr.or.nextit.bookmarket.comment.CommentMapper;
 import kr.or.nextit.bookmarket.common.SearchVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
 	private final BoardMapper mapper;
 	private final FileMapper fileMapper;
+	private final CommentMapper commentMapper;
 
 	public int selectBoardsTotalCount(SearchVO search) {
 		return mapper.selectBoardsTotalCount(search);
@@ -44,6 +46,8 @@ public class BoardService {
 
 	@Transactional
 	public int deleteBoard(long no) {
+		fileMapper.deleteFile(no);
+		commentMapper.deleteComment(no);
 		return mapper.deleteBoard(no);
 	}
 
