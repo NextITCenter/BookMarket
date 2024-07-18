@@ -12,17 +12,18 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LogAspect {
+    @Pointcut("execution(public * kr..comment.CommentService.insertComment(..) )")
+    private void pointCut() {}
 
-//    @After("execution(public * kr..comment.CommentService.insertComment(..) )")
-//    public void logAfter() {
-//        log.debug("====================CommnetService 의 insertComment()메소드 호출 후 출력된 로그");
-//    }
-//    @Before("execution(public * kr..comment.CommentService.insertComment(..) )")
-//    public void logBefore() {
-//        log.debug("====================CommentService의 insertComment() 메소드가 호출 되기 전 출력");
-//    }
-
-    @Around("execution(public * kr..comment.CommentService.insertComment(..) )")
+    @After("pointCut()")
+    public void logAfter() {
+        log.debug("====================CommnetService 의 insertComment()메소드 호출 후 출력된 로그");
+    }
+    @Before("pointCut()")
+    public void logBefore() {
+        log.debug("====================CommentService의 insertComment() 메소드가 호출 되기 전 출력");
+    }
+    @Around("pointCut()")
     public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
         log.debug("====================CommentService의 insertComment() 메소드가 호출 되기 전 출력");
         Object proceed = pjp.proceed();

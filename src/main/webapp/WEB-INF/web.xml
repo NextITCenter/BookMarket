@@ -37,15 +37,16 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <filter>
-        <filter-name>sessionCheck</filter-name>
-        <filter-class>kr.or.nextit.bookmarket.common.MemberCheckFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>sessionCheck</filter-name>
-        <url-pattern>/boards/insert</url-pattern>
-        <url-pattern>/boards/update</url-pattern>
-    </filter-mapping>
+    <!-- SpringMVC의 Interceptor로 변경 -->
+<!--    <filter>-->
+<!--        <filter-name>sessionCheck</filter-name>-->
+<!--        <filter-class>kr.or.nextit.bookmarket.common.MemberCheckFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>sessionCheck</filter-name>-->
+<!--        <url-pattern>/boards/insert</url-pattern>-->
+<!--        <url-pattern>/boards/update</url-pattern>-->
+<!--    </filter-mapping>-->
 
     <!-- Model(자바쪽) 컨텍스트 등록시 사용 -->
     <context-param>

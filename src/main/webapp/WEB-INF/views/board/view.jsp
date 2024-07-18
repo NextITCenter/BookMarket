@@ -78,6 +78,19 @@
 </div>
 <script src="${pageContext.request.contextPath }/js/bootstrap.bundle.min.js"></script>
 <script>
+	const contentArea = document.querySelector("#content")
+	contentArea.addEventListener("focus", () => {
+		console.dir(location);
+		fetch("/sessionCheck?retUrl=" + location.pathname + location.search)
+				.then(response => response.text())
+				.then(result => {
+					if (result != "exist") {
+						location.href = result
+					}
+				});
+	});
+
+
 	// 보통 자바스크립트에서 원하는 요소(Element)를 선택해서 가져올 때 id, name, class, tagname 등을
 	// 사용해서 가져온다. 그 중에서 id는 크롬 브라우저에서 상수값으로 자동으로 등록해준다.
 // 	const deleteBtn = document.querySelector("deleteBtn");
@@ -136,16 +149,17 @@
 					// 		`<small>\${data.registerDate}</small>` +
 					// 		'</a>';
 					// 3. html에 숨김 화면으로 템플릿을 만들고 그 템플릿을 가져와서 사용
-					const commentTemplate = document.querySelector("#commentTemplate").cloneNode(true);
-					commentTemplate.querySelector("h5").textContent = data.content;
-					commentTemplate.querySelector("div>small").textContent = data.writer;
-					commentTemplate.querySelector("small.date").textContent = data.registerDate;
-					commentsArea.appendChild(commentTemplate);
+					const commentItem = document.querySelector("#commentTemplate").cloneNode(true);
+					commentItem.querySelector("h5").textContent = data.content;
+					commentItem.querySelector("div>small").textContent = data.writer;
+					commentItem.querySelector("small.date").textContent = data.registerDate;
+					commentsArea.appendChild(commentItem);
 					const contentArea = document.querySelector("#content")
 					contentArea.value = "";
 				});
 	})
 </script>
+
 <a href="#" id="commentTemplate" class="list-group-item list-group-item-action" aria-current="true">
 	<div class="d-flex w-100 justify-content-between">
 		<h5 class="mb-1"></h5>
@@ -154,6 +168,7 @@
 	<p class="mb-1"></p>
 	<small class="date"></small>
 </a>
+
 </body>
 </html>
 

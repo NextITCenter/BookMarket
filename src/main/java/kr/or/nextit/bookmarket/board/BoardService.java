@@ -41,7 +41,8 @@ public class BoardService {
 	public int updateBoard(BoardVO board) {
 		return mapper.updateBoard(board);
 	}
-	
+
+	@Transactional
 	public int deleteBoard(long no) {
 		return mapper.deleteBoard(no);
 	}
