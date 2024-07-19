@@ -1,6 +1,6 @@
 package kr.or.nextit.bookmarket.comment;
 
-import kr.or.nextit.bookmarket.login.MemberVO;
+import kr.or.nextit.bookmarket.member.MemberVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

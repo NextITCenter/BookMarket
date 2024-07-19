@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -94,6 +95,7 @@
 				</div>
 				<div class="row my-3">
 					<div class="col-md-7 d-grid">
+						<sec:csrfInput/>
 						<button type="submit" class="btn btn-primary">등록</button>
 					</div>
 				</div>

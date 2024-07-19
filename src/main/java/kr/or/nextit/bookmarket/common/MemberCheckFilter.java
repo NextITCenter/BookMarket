@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import kr.or.nextit.bookmarket.login.MemberVO;
+import kr.or.nextit.bookmarket.member.MemberVO;
 
 public class MemberCheckFilter extends HttpFilter {
 	@Override

@@ -1,4 +1,4 @@
-package kr.or.nextit.bookmarket.login;
+package kr.or.nextit.bookmarket.member;
 
 import java.time.LocalDate;
 

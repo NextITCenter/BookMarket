@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--
+     Spring Security 패스워드를 암호화해서 처리해야 한다.
+     BcryptPasswordEncoder 라는 클래스를 사용하여 처리
+     -->
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <!-- 로그인 및 로그아웃, 요청(url)에 따른 권한 부여 -->
+    <security:http>
+        <security:form-login login-page="/login" username-parameter="email"/>
+        <!--
+        비회원: /boards, /boards/view, /login, /logout
+        회원
+            일반(user): /boards/insert, /boards/update, /boards/delete, /carts, /cart/add, /comments/new
+            관리자(manager): /books/**
+            admin: 모든 메뉴 가능
+        -->
+        <security:intercept-url pattern="/books/**" access="hasRole('ROLE_MANAGER')"/>
+        <security:intercept-url pattern="/boards/insert" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/boards/update" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/boards/delete" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/carts" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/cart/add" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/comments/new" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/boards" access="permitAll()"/>
+        <security:intercept-url pattern="/boards/view" access="permitAll()"/>
+        <security:intercept-url pattern="/login" access="permitAll()"/>
+        <security:intercept-url pattern="/logout" access="permitAll()"/>
+    </security:http>
+    <!-- csrf 토큰 사용 안함(개발할 때만 설정) -->
+<!--    <security:csrf disabled="true"/>-->
+    <!-- 사용자 관리 authentication 과 authorization -->
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <!-- Spring Security의 InMemory 방식에 의해 사용자 등록 -->
+<!--            <security:user-service>-->
+<!--                <security:user name="admin" password="{noop}1234" authorities="ROLE_USER,ROLE_MANAGER,ROLE_ADMIN"/>-->
+<!--                <security:user name="manager" password="{noop}1234" authorities="ROLE_USER,ROLE_MANAGER"/>-->
+<!--                <security:user name="user" password="{noop}1234" authorities="ROLE_USER"/>-->
+<!--            </security:user-service>-->
+            <!-- Spring Security의 JDBC 방식 -->
+            <security:jdbc-user-service data-source-ref="dataSource"/>
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+</beans>

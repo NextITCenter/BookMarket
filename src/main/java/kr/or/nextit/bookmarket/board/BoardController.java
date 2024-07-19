@@ -2,7 +2,7 @@ package kr.or.nextit.bookmarket.board;
 
 import kr.or.nextit.bookmarket.common.PaginationInfo;
 import kr.or.nextit.bookmarket.common.SearchVO;
-import kr.or.nextit.bookmarket.login.MemberVO;
+import kr.or.nextit.bookmarket.member.MemberVO;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

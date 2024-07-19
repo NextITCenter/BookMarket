@@ -46,8 +46,8 @@ public class BoardService {
 
 	@Transactional
 	public int deleteBoard(long no) {
-		fileMapper.deleteFile(no);
-		commentMapper.deleteComment(no);
+//		fileMapper.deleteFile(no);
+//		commentMapper.deleteComment(no);
 		return mapper.deleteBoard(no);
 	}
 

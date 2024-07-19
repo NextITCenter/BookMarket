@@ -1,6 +1,6 @@
 package kr.or.nextit.bookmarket.common;
 
-import kr.or.nextit.bookmarket.login.MemberVO;
+import kr.or.nextit.bookmarket.member.MemberVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

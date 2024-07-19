@@ -34,13 +34,13 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/boards/**"/>
-            <mvc:exclude-mapping path="/boards"/>
-            <mvc:exclude-mapping path="/boards/view"/>
-            <ref bean="authCheckInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
+<!--    <mvc:interceptors>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/boards/**"/>-->
+<!--            <mvc:exclude-mapping path="/boards"/>-->
+<!--            <mvc:exclude-mapping path="/boards/view"/>-->
+<!--            <ref bean="authCheckInterceptor"/>-->
+<!--        </mvc:interceptor>-->
+<!--    </mvc:interceptors>-->
 
 </beans>

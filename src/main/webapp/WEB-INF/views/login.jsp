@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -92,7 +93,7 @@
 		<form action="${pageContext.request.contextPath }/login" method="post">
 			<h1 class="h3 mb-3 fw-normal">로그인</h1>
 			<div class="form-floating">
-				<input type="email" class="form-control" id="floatingInput" name="email" value="${cookie.rememberMe.value }" placeholder="name@example.com">
+				<input type="text" class="form-control" id="floatingInput" name="email" value="${cookie.rememberMe.value }" placeholder="name@example.com">
 				<label for="floatingInput">Email address</label>
 			</div>
 			<div class="form-floating">
@@ -104,6 +105,8 @@
 				<input class="form-check-input" type="checkbox" value="remember-me" name="rememberMe" id="flexCheckDefault" ${cookie.rememberMe != null ?'checked':''}>
 				<label class="form-check-label" for="flexCheckDefault"> Remember me </label>
 			</div>
+<%--			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
+			<sec:csrfInput/>
 			<button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
 			<p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
 		</form>
