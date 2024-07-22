@@ -23,4 +23,5 @@ public class MemberService {
         member.setPassword(encodePassword);
         mapper.updatePassword(member);
     }
+
 }

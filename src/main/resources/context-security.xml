@@ -13,6 +13,7 @@
     <!-- 로그인 및 로그아웃, 요청(url)에 따른 권한 부여 -->
     <security:http>
         <security:form-login login-page="/login" username-parameter="email"/>
+        <security:logout logout-url="/logout" invalidate-session="true"/>
         <!--
         비회원: /boards, /boards/view, /login, /logout
         회원
@@ -31,12 +32,13 @@
         <security:intercept-url pattern="/boards/view" access="permitAll()"/>
         <security:intercept-url pattern="/login" access="permitAll()"/>
         <security:intercept-url pattern="/logout" access="permitAll()"/>
+        <security:intercept-url pattern="/password" access="permitAll()"/>
     </security:http>
     <!-- csrf 토큰 사용 안함(개발할 때만 설정) -->
 <!--    <security:csrf disabled="true"/>-->
     <!-- 사용자 관리 authentication 과 authorization -->
     <security:authentication-manager>
-        <security:authentication-provider>
+        <security:authentication-provider user-service-ref="customUserDetailsService">
             <!-- Spring Security의 InMemory 방식에 의해 사용자 등록 -->
 <!--            <security:user-service>-->
 <!--                <security:user name="admin" password="{noop}1234" authorities="ROLE_USER,ROLE_MANAGER,ROLE_ADMIN"/>-->
@@ -44,7 +46,7 @@
 <!--                <security:user name="user" password="{noop}1234" authorities="ROLE_USER"/>-->
 <!--            </security:user-service>-->
             <!-- Spring Security의 JDBC 방식 -->
-            <security:jdbc-user-service data-source-ref="dataSource"/>
+<!--            <security:jdbc-user-service data-source-ref="dataSource"/>-->
             <security:password-encoder ref="bCryptPasswordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>

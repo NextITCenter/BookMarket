@@ -2,6 +2,7 @@
 <%@page import="java.time.LocalDateTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
 <body>
 <div class="container py-4">
 	<jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
+	<sec:authentication property="principal"/>
 	<main>
 		<div class="p-5 mb-4 bg-body-tertiary rounded-3">
 			<div class="container-fluid py-5">

@@ -2,6 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.or.nextit.bookmarket.member.MemberMapper">
+	<resultMap id="memberMap" type="memberVO">
+		<result property="id" column="id"/>
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="registerDate" column="register_date"/>
+		<result property="modifiedDate" column="modified_date"/>
+		<collection property="authList" select="selectAuths" column="email" javaType="list" ofType="authVO"/>
+	</resultMap>
+	<select id="selectMemberByEmail" parameterType="string" resultMap="memberMap">
+		SELECT
+			ID,
+			EMAIL,
+			PASSWORD,
+			NAME,
+			REGISTER_DATE,
+			MODIFIED_DATE
+		FROM
+			MEMBER
+		WHERE
+			EMAIL = #{email}
+	</select>
+	<select id="selectAuths" parameterType="string" resultType="authVO">
+		SELECT
+			MEMBER_EMAIL,
+			AUTH
+		FROM
+			MEMBER_AUTH
+		WHERE
+			MEMBER_EMAIL = #{email}
+	</select>
 	<insert id="insertMember" parameterType="memberRequest">
 		INSERT INTO
 			MEMBER

@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: user
@@ -12,8 +13,13 @@
 </head>
 <body>
 <form action="/password" method="post">
-    <input type="text" name="email">
-    <input type="password" name="password">
+    <label>이메일:
+        <input type="text" name="email" placeholder="이메일">
+    </label>
+    <label>패스워드:
+        <input type="password" name="password" placeholder="패스워드">
+    </label>
+    <sec:csrfInput/>
     <button>변경</button>
 </form>
 </body>

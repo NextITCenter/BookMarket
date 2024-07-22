@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	<header>
 		<div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
 			<a href="${pageContext.request.contextPath }/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
@@ -13,14 +14,12 @@
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href='<c:url value="/books"/>'>도서 목록</a>
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/books/insert">도서 등록</a>
 				<a class="me-3 py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/boards">게시판</a>
-			<c:choose>
-			<c:when test="${empty sessionScope.member }">
-				<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/login">로그인</a>
-			</c:when>
-			<c:otherwise>
-				<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/logout">로그아웃</a>
-			</c:otherwise>
-			</c:choose>
+				<sec:authorize access="isAnonymous()">
+					<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/login">로그인</a>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
+					<a class="py-2 link-body-emphasis text-decoration-none" href="${pageContext.request.contextPath }/logout">로그아웃</a>
+				</sec:authorize>
 			</nav>
 		</div>
 	</header>
